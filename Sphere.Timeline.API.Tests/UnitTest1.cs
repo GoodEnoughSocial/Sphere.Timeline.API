@@ -1,4 +1,4 @@
-namespace Sphere.ApiGateway.API.Tests;
+namespace Sphere.Timeline.API.Tests;
 
 public class UnitTest1
 {

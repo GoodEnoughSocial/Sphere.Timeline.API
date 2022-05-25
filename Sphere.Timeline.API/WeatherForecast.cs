@@ -1,4 +1,4 @@
-namespace Sphere.ApiGateway.API;
+namespace Sphere.Timeline.API;
 
 public class WeatherForecast
 {

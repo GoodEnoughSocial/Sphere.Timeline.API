@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Sphere.ApiGateway.API": {
+    "Sphere.Timeline.API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

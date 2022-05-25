@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Sphere.ApiGateway.API.Controllers;
+namespace Sphere.Timeline.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
