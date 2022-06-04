@@ -1,25 +1,54 @@
-var builder = WebApplication.CreateBuilder(args);
+using Serilog;
+using Sphere.Shared;
 
-// Add services to the container.
+Log.Logger = SphericalLogger.SetupLogger();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+Log.Information("Starting up");
 
-var app = builder.Build();
+var registration = Services.Timeline.GetServiceRegistration();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var result = await Services.RegisterService(registration);
+
+
+    var builder = WebApplication.CreateBuilder(args);
+
+    // Add services to the container.
+
+    builder.Services.AddControllers();
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
 }
+catch (Exception ex)
+{
+    if (ex.GetType().Name != "StopTheHostException")
+    {
+        Log.Fatal(ex, "Unhandled exception");
+    }
+}
+finally
+{
+    await Services.UnregisterService(registration);
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+    Log.Information("Shutting down");
+    Log.CloseAndFlush();
+}
