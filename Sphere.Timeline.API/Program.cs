@@ -10,6 +10,7 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseSerilog(SphericalLogger.SetupLogger);
+    builder.Services.AddInjectableOrleansClient();
     builder.Services.AddHealthChecks();
 
     // Add services to the container.
